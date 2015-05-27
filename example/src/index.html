@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html ng-app="webApp">
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>AngularJS Unit Testing</title>
+  <script src="../node_modules/angular/angular.min.js"></script>
+  <script src="app/app.js"></script>
+  <script src="app/my-controller.js"></script>
+  <script src="app/my-service.js"></script>
+  <script src="app/my-directive.js"></script>
+  <script src="app/my-provider/my-provider.module.js"></script>
+  <script src="app/my-provider/hello-world.provider.js"></script>
+  <script src="app/my-provider/btn-hello-world.directive.js"></script>
+</head>
+<body ng-controller="MyController as vm">
+  <input type="text" ng-model="thing.name"/>
+  <my-directive something="thing"></my-directive>
+  <btn-hello-world></btn-hello-world>
+  <ul>
+    <li>{{vm.myProperty}}</li>
+    <li>{{vm.myObject.name}}</li>
+    <li ng-repeat="item in vm.myArray">{{item.name}}</li>
+  </ul>
+</body>
+</html>
