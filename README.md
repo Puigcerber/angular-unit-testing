@@ -2,17 +2,27 @@
 
 Unit testing, as the name implies, is about testing individual units of code.
 
-Angular is written with testability in mind and come with [dependency injection](https://docs.angularjs.org/guide/di)
-built in. DI helps us to achieve decoupling and therefore to test our objects in isolation.
+## About
 
-Angular provides [ngMock](https://docs.angularjs.org/api/ngMock) to inject and mock services into unit tests. And one
-of the most useful parts of `ngMock`  is `$httpBackend` which lets us mock XHR requests.
+This guide tries to show a few patterns and guidelines to help us with unit testing Angular applications after setting
+some minimum configuration.
+
+A more readable version was [published on Airpair](https://www.airpair.com/angularjs/posts/unit-testing-angularjs-applications)
+and won the "Best AngularJS post" category of the 2015 Developer Writing Competition.
+It has been shared more than 600 times on social media.
+
+This repository contains also a complimentary [example project](example) with 100% test coverage.
 
 ## Table of Contents
 
-* [Karma](#karma)
-  * [Templates](#templates)
+* [Configuring](#configuring)
+  * [ngMock](#ngmock)
+  * [Karma](#karma)
+    * [Templates](#templates)
+    * [Coverage](#coverage)
 * [Mocking](#mocking)
+  * [Using $provide](#using-provide)
+  * [Creating a provider mock](#creating-a-provider-mock)
 * [Spying](#spying)
 * [Testing](#testing)
   * [Controllers](#controllers)
@@ -20,11 +30,30 @@ of the most useful parts of `ngMock`  is `$httpBackend` which lets us mock XHR r
   * [Directives](#directives)
   * [Providers](#providers)
 
-## Karma
+## Configuring
 
-[Karma](http://karma-runner.github.io/0.12/index.html) is a test runner which allow us to execute tests in multiple browsers.
+### ngMock
 
-After [installing](https://karma-runner.github.io/0.12/intro/installation.html) it we need to crete a configuration
+Angular provides [ngMock](https://docs.angularjs.org/api/ngMock) to inject and mock services into unit tests. And one
+of the most useful parts of `ngMock`  is `$httpBackend` which lets us mock XHR requests.
+
+```
+$ npm install angular-mocks --save-dev
+```
+
+### Karma
+
+[Karma](http://karma-runner.github.io/) is a test runner which allow us to execute tests in multiple browsers.
+
+```
+# Install Karma:
+$ npm install karma --save-dev
+
+# Install plugins that our project needs:
+$ npm install karma-jasmine jasmine-core karma-chrome-launcher --save-dev
+```
+
+After installing it we need to crete a configuration
 file running `karma init`.
 
 And set the list of files that need to be loaded in the browser.
@@ -41,13 +70,17 @@ module.exports = function(config) {
 };
 ```
 
-### Templates
+#### Templates
 
 When testing directives we need to set up Karma to serve our templates.
 
 And for that we use a preprocessor to convert HTML into JS string.
 [ng-html2js](https://github.com/karma-runner/karma-ng-html2js-preprocessor) creates a "templates" module and put the HTML
  into the `$templateCache`.
+
+ ```
+$ npm install karma-ng-html2js-preprocessor --save-dev
+```
 
 We need to add some lines to the Karma configuration.
 
@@ -73,9 +106,41 @@ module.exports = function(config) {
 };
 ```
 
+#### Coverage
+
+It's great to identify which parts of our code are lacking test coverage and generate reports with
+[Istanbul](https://github.com/gotwarlost/istanbul), that calculates the percentage of code accessed by tests.
+
+```
+$ npm install karma karma-coverage --save-dev
+```
+
+In the configuration file we need to exclude spec and mock files from the report.
+
+```js
+module.exports = function(config) {
+  config.set({
+    preprocessors: {
+      'src/**/!(*.mock|*.spec).js': ['coverage']
+    },
+
+    reporters: ['progress', 'coverage'],
+
+    coverageReporter: {
+      type : 'html',
+      // output coverage reports
+      dir : 'coverage/'
+    }
+  });
+};
+```
+
 ## Mocking
 
 To test the functionality of a piece of code in isolation we need to mock any dependency.
+
+Angular is written with testability in mind and come with [dependency injection](https://docs.angularjs.org/guide/di)
+built in, what helps us to achieve decoupling and therefore to test our objects in isolation.
 
 A service (service, factory, value, constant, or provider) is the most common type of dependency in Angular applications
 and they are defined via providers.
@@ -100,7 +165,7 @@ beforeEach(module(function($provide) {
 
 ### Creating a provider mock
 
-We create the implementation in a separate `my-service.service.mock.coffee` file so we can reuse it.
+We create the implementation in a separate `my-service.service.mock.js` file so we can reuse it.
 
 ```js
 angular.module('myServiceMock', [])
