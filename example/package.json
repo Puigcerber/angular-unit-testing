@@ -21,7 +21,7 @@
     "karma-ng-html2js-preprocessor": "^0.1.2"
   },
   "scripts": {
-    "lint": "jshint src/**/*.js src/app/**/*.js; true",
+    "lint": "jshint src; true",
     "test": "karma start --singleRun"
   },
   "keywords": [
