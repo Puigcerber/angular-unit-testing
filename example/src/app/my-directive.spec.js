@@ -16,15 +16,15 @@ describe('Directive: myDirective', function() {
   }));
 
   it('should render something', function() {
-    var h1 = element.find('h1');
-    expect(h1.text()).toBe('My thing');
+    var h2 = element.find('h2');
+    expect(h2.text()).toBe('My thing');
   });
 
   it('should update the rendered text when scope changes', function() {
     scope.thing.name = 'My new thing';
     scope.$apply();
-    var h1 = element.find('h1');
-    expect(h1.text()).toBe('My new thing');
+    var h2 = element.find('h2');
+    expect(h2.text()).toBe('My new thing');
   });
 
   describe('Directive controller', function() {

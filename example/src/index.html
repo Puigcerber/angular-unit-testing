@@ -11,15 +11,19 @@
   <script src="app/my-provider/my-provider.module.js"></script>
   <script src="app/my-provider/hello-world.provider.js"></script>
   <script src="app/my-provider/btn-hello-world.directive.js"></script>
+  <script src="app/my-component.js"></script>
 </head>
-<body ng-controller="MyController as vm">
-  <input type="text" ng-model="thing.name"/>
+<body>
+  <my-component my-binding="1.5"></my-component>
   <my-directive something="thing"></my-directive>
+  <input type="text" ng-model="thing.name"/>
   <btn-hello-world></btn-hello-world>
-  <ul>
-    <li>{{vm.myProperty}}</li>
-    <li>{{vm.myObject.name}}</li>
-    <li ng-repeat="item in vm.myArray">{{item.name}}</li>
-  </ul>
+  <div ng-controller="MyController as vm">
+    <ul>
+      <li>{{vm.myProperty}}</li>
+      <li>{{vm.myObject.name}}</li>
+      <li ng-repeat="item in vm.myArray">{{item.name}}</li>
+    </ul>
+  </div>
 </body>
 </html>
