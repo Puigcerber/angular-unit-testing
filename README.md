@@ -53,7 +53,7 @@ $ npm install karma --save-dev
 $ npm install karma-jasmine jasmine-core karma-chrome-launcher --save-dev
 ```
 
-After installing it we need to crete a configuration
+After installing it we need to create a configuration
 file running `karma init`.
 
 And set the list of files that need to be loaded in the browser.
